@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          sponsor_status=$(curl -o /dev/null -s -w "%{http_code}" -I -L https://github.com/sponsors/{{ github.actor }})
+          sponsor_status=$(curl -o /dev/null -s -w "%{http_code}" -I -L https://github.com/sponsors/${{ github.actor }})
           if [ "$sponsor_status" -eq 200 ]; then
             echo "URL does not redirect, workflow succeeds."
           else
