@@ -10,6 +10,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Count changed lines
+        id: count-lines
+        if: success()
+        run: |
+          changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} END {print s}')
+          echo "CHANGED_LINES=$changed_lines" >> $GITHUB_ENV
       - run: |
           sponsor_status=$(curl -o /dev/null -s -w "%{http_code}" -I -L https://github.com/sponsors/hackclub-bot)
           if [ "$sponsor_status" -eq 200 ]; then
@@ -18,16 +24,6 @@ jobs:
             echo "URL redirects, workflow fails."
             exit 1
           fi
-      - run: "git diff --name-only origin/main origin/${GITHUB_HEAD_REF}"
-      - name: Count changed lines
-        id: count-lines
-        if: success()
-        run: |
-          changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} END {print s}')
-          echo "CHANGED_LINES=$changed_lines" >> $GITHUB_ENV
-      - name: Count Lines of Code (cloc)
-        if: success()
-        uses: djdefi/cloc-action@6
       - name: Comment PR
         if: success()
         uses: thollander/actions-comment-pull-request@v2
