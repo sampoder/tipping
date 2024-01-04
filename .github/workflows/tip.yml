@@ -1,6 +1,8 @@
 name: Suggest A Tip
 run-name: How much do you want to tip ${{ github.actor }}?
-on: [pull_request]
+on: [pull_request_target]
+permissions: 
+   pull-requests: write 
 jobs:
   suggest_tips:
     runs-on: ubuntu-latest
