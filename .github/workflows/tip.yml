@@ -16,6 +16,13 @@ jobs:
             echo "URL redirects, workflow fails."
             exit 1
           fi
+      - name: Count changed lines
+        id: count-lines
+        if: success()
+        run: |
+          commit_range=$(git log -1 --pretty=format:"%T...%H")
+          changed_lines=$(git diff --unified=0 $commit_range | grep -e '^[+-]' | wc -l)
+          echo "CHANGED_LINES=$changed_lines" >> $GITHUB_ENV
       - name: Count Lines of Code (cloc)
         if: success()
         uses: djdefi/cloc-action@6
@@ -24,7 +31,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Hello there testing! :wave: ${{github.event.pull_request.diff_url}}
+            Hello there testing! :wave: ${{ env.CHANGED_LINES }}
       - run: echo "Awesome!"
         if: always()
             
