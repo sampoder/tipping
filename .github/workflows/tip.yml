@@ -15,6 +15,9 @@ jobs:
             echo "URL redirects, workflow fails."
             exit 1
           fi
+      - name: Count Lines of Code (cloc)
+        if: success()
+        uses: djdefi/cloc-action@6
       - name: Comment PR
         if: success()
         uses: thollander/actions-comment-pull-request@v2
