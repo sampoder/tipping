@@ -15,9 +15,9 @@ jobs:
         if: success()
         run: |
           changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} END {print s}')
-          opt_one=$(printf "%.2f" $((changed_lines*1.00)))
-          opt_two=$(printf "%.2f" $((changed_lines*0.75)))
-          opt_three=$(printf "%.2f" $((changed_lines*0.50)))
+          opt_one=$(printf "%.2f" "$changed_lines")
+          opt_two=$(printf "%.2f" "$(echo "$changed_lines * 0.75" | bc)")
+          opt_three=$(printf "%.2f" "$(echo "$changed_lines * 0.50" | bc)")
           echo "ONE=$opt_one" >> $GITHUB_ENV
           echo "TWO=$opt_two" >> $GITHUB_ENV
           echo "THREE=$opt_three" >> $GITHUB_ENV
