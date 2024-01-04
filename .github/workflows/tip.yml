@@ -28,7 +28,7 @@ jobs:
           message: |
             Please choose an option to tip:
 
-            | <h1>😁</h1> <i>$1.00/line</i>: $${{ env.ONE }} | <h1>😄</h1> <i>$0.75/line</i>: $${{ env.TWO }} | <h1>😃</h1> <i>$0.50/line</i>: $${{ env.THREE }} |
+            | <h1>😁</h1> <a href="https://github.com/sponsors/sampoder?frequency=one-time&sponsor=sampoder&amount=${{ env.ONE }}"><i>$1.00/line</i>: $${{ env.ONE }}</a> | <h1>😄</h1> <i>$0.75/line</i>: $${{ env.TWO }} | <h1>😃</h1> <i>$0.50/line</i>: $${{ env.THREE }} |
             | ----------- | ----------- |----------- |
           comment_tag: tip
       - run: echo "Awesome!"
