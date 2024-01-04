@@ -15,16 +15,21 @@ jobs:
         if: success()
         run: |
           changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} END {print s}')
-          echo "CHANGED_LINES=$changed_lines" >> $GITHUB_ENV
+          opt_one=$(printf "%.2f" $((changed_lines*1.00)))
+          opt_two=$(printf "%.2f" $((changed_lines*0.75)))
+          opt_three=$(printf "%.2f" $((changed_lines*0.50)))
+          echo "ONE=$opt_one" >> $GITHUB_ENV
+          echo "TWO=$opt_two" >> $GITHUB_ENV
+          echo "THREE=$opt_three" >> $GITHUB_ENV
       - name: Comment PR
         if: success()
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             Please choose an option to tip:
-            $1.00/line: ${{ env.CHANGED_LINES }}
-            $0.75/line: ${{ env.CHANGED_LINES * 0.75 }}
-            $0.50/line: ${{ env.CHANGED_LINES * 0.50 }}
+            $1.00/line: $ ${{ env.ONE }}
+            $0.75/line: $ ${{ env.TWO }}
+            $0.50/line: $ ${{ env.THREE }}
       - run: echo "Awesome!"
         if: always()
             
