@@ -5,5 +5,11 @@ jobs:
   suggest_tips:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: |
+          status=$(curl -o /dev/null -s -w "%{http_code}" -I -L https://github.com/sponsors/{{ github.actor }})
+          if [ "$status" -eq 200 ]; then
+            echo "URL does not redirect, workflow succeeds."
+          else
+            echo "URL redirects, workflow fails."
+            exit 1
+          fi
