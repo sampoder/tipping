@@ -23,7 +23,7 @@ jobs:
         id: count-lines
         if: success()
         run: |
-          changed_lines=$(git diff --name-only origin/main origin/${GITHUB_HEAD_REF} | grep -e '^[+-]' | wc -l)
+          changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} END {print s}')
           echo "CHANGED_LINES=$changed_lines" >> $GITHUB_ENV
       - name: Count Lines of Code (cloc)
         if: success()
