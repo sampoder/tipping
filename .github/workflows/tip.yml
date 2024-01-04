@@ -1,0 +1,8 @@
+name: Suggest A Tip
+run-name: How much do you want to tip ${{ github.actor }}?
+on: [push]
+jobs:
+  suggest_tips:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
