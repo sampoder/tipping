@@ -20,8 +20,7 @@ jobs:
         id: count-lines
         if: success()
         run: |
-          commit_range=$(git log -1 --pretty=format:"%T...%H")
-          changed_lines=$(git diff --unified=0 $commit_range | grep -e '^[+-]' | wc -l)
+          changed_lines=$(git diff --name-only origin/main origin/${GITHUB_HEAD_REF} | grep -e '^[+-]' | wc -l)
           echo "CHANGED_LINES=$changed_lines" >> $GITHUB_ENV
       - name: Count Lines of Code (cloc)
         if: success()
