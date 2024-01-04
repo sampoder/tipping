@@ -7,20 +7,30 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          sponsor_status=$(curl -o /dev/null -s -w "%{http_code}" -I -L https://github.com/sponsors/${{ github.actor }})
-          if [ "$sponsor_status" -eq 200 ]; then
-            echo "URL does not redirect, workflow succeeds."
-          else
-            echo "URL redirects, workflow fails."
-            exit 1
-          fi
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Count changed lines
+        id: count-lines
+        if: success()
+        run: |
+          changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} {s+=$6} END {print s}')
+          opt_one=$(printf "%.2f" "$changed_lines")
+          opt_two=$(printf "%.2f" "$(echo "$changed_lines * 0.75" | bc)")
+          opt_three=$(printf "%.2f" "$(echo "$changed_lines * 0.50" | bc)")
+          echo "ONE=$opt_one" >> $GITHUB_ENV
+          echo "TWO=$opt_two" >> $GITHUB_ENV
+          echo "THREE=$opt_three" >> $GITHUB_ENV
       - name: Comment PR
         if: success()
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Hello there testing! :wave:
+            Please choose an option to tip:
+
+            | <h1>😁</h1> <a href="https://github.com/sponsors/${{ github.actor }}?frequency=one-time&amount=${{ env.ONE }}"><i>$1.00/line</i>: $${{ env.ONE }}</a> | <h1>😄</h1> <a href="https://github.com/sponsors/sampoder?frequency=one-time&amount=${{ env.TWO }}"><i>$0.75/line</i>: $${{ env.TWO }}</a> | <h1>😃</h1> <a href="https://github.com/sponsors/${{ github.actor }}?frequency=one-time&amount=${{ env.THREE }}"><i>$0.50/line</i>: $${{ env.THREE }}</a> |
+            | ----------- | ----------- |----------- |
+          comment_tag: tip
       - run: echo "Awesome!"
         if: always()
             
