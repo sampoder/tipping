@@ -14,7 +14,7 @@ jobs:
         id: count-lines
         if: success()
         run: |
-          changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} END {print s}')
+          changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} {s+=$6} END {print s}')
           opt_one=$(printf "%.2f" "$changed_lines")
           opt_two=$(printf "%.2f" "$(echo "$changed_lines * 0.75" | bc)")
           opt_three=$(printf "%.2f" "$(echo "$changed_lines * 0.50" | bc)")
@@ -27,9 +27,9 @@ jobs:
         with:
           message: |
             Please choose an option to tip:
-            $1.00/line: $ ${{ env.ONE }}
-            $0.75/line: $ ${{ env.TWO }}
-            $0.50/line: $ ${{ env.THREE }}
+            $1.00/line: $${{ env.ONE }}
+            $0.75/line: $${{ env.TWO }}
+            $0.50/line: $${{ env.THREE }}
       - run: echo "Awesome!"
         if: always()
             
