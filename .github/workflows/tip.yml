@@ -16,20 +16,15 @@ jobs:
         run: |
           changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} END {print s}')
           echo "CHANGED_LINES=$changed_lines" >> $GITHUB_ENV
-      - run: |
-          sponsor_status=$(curl -o /dev/null -s -w "%{http_code}" -I -L https://github.com/sponsors/hackclub-bot
-          if [ "$sponsor_status" -eq 200 ]; then
-            echo "URL does not redirect, workflow succeeds."
-          else
-            echo "URL redirects, workflow fails."
-            exit 1
-          fi
       - name: Comment PR
         if: success()
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Hello there testing! :wave: ${{ env.CHANGED_LINES }}
+            Please choose an option to tip:
+            $1.00/line: ${{ env.CHANGED_LINES }}
+            $0.75/line: ${{ env.CHANGED_LINES * 0.75 }}
+            $0.50/line: ${{ env.CHANGED_LINES * 0.50 }}
       - run: echo "Awesome!"
         if: always()
             
