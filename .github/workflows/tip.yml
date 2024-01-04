@@ -13,3 +13,13 @@ jobs:
             echo "URL redirects, workflow fails."
             exit 1
           fi
+      - name: Comment PR
+        if: success()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Hello there testing! :wave:
+      - run: echo "Awesome!"
+        if: always()
+            
+            
