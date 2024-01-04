@@ -27,10 +27,9 @@ jobs:
         with:
           message: |
             Please choose an option to tip:
-              
-            $1.00/line: $${{ env.ONE }}
-            $0.75/line: $${{ env.TWO }}
-            $0.50/line: $${{ env.THREE }}
+
+            | <h1>😁</h1> <i>$1.00/line</i>: $${{ env.ONE }} | <h1>😄</h1> <i>$0.75/line</i>: $${{ env.TWO }} | <h1>😃</h1> <i>$0.50/line</i>: $${{ env.THREE }} |
+            | ----------- | ----------- |----------- |
           comment_tag: tip
       - run: echo "Awesome!"
         if: always()
