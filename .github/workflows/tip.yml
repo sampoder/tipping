@@ -20,7 +20,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Hello there testing! :wave:
+            Hello there testing! :wave: ${{github.event.pull_request.diff_url}}
       - run: echo "Awesome!"
         if: always()
             
