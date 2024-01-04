@@ -18,6 +18,7 @@ jobs:
             echo "URL redirects, workflow fails."
             exit 1
           fi
+      - run: "git diff --name-only origin/main origin/${GITHUB_HEAD_REF}"
       - name: Count changed lines
         id: count-lines
         if: success()
