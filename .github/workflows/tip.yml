@@ -10,9 +10,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Count changed lines
+      - name: Calculate the lines changed & the tip options.
         id: count-lines
-        if: success()
         run: |
           changed_lines=$(git diff --shortstat origin/main origin/${GITHUB_HEAD_REF} | awk '{s+=$4} {s+=$6} END {print s}')
           opt_one=$(printf "%.2f" "$changed_lines")
@@ -21,8 +20,7 @@ jobs:
           echo "ONE=$opt_one" >> $GITHUB_ENV
           echo "TWO=$opt_two" >> $GITHUB_ENV
           echo "THREE=$opt_three" >> $GITHUB_ENV
-      - name: Comment PR
-        if: success()
+      - name: Comment the tip options on the PR.
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
@@ -31,7 +29,3 @@ jobs:
             | <h1>😁</h1> <a href="https://github.com/sponsors/${{ github.actor }}?frequency=one-time&amount=${{ env.ONE }}"><i>$1.00/line</i>: $${{ env.ONE }}</a> | <h1>😄</h1> <a href="https://github.com/sponsors/sampoder?frequency=one-time&amount=${{ env.TWO }}"><i>$0.75/line</i>: $${{ env.TWO }}</a> | <h1>😃</h1> <a href="https://github.com/sponsors/${{ github.actor }}?frequency=one-time&amount=${{ env.THREE }}"><i>$0.50/line</i>: $${{ env.THREE }}</a> |
             | ----------- | ----------- |----------- |
           comment_tag: tip
-      - run: echo "Awesome!"
-        if: always()
-            
-            
