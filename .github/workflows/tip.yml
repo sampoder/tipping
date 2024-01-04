@@ -1,6 +1,6 @@
 name: Suggest A Tip
 run-name: How much do you want to tip ${{ github.actor }}?
-on: [pull_request_target]
+on: [pull_request_target, pull_request]
 permissions: 
    pull-requests: write 
 jobs:
